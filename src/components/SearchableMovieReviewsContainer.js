@@ -7,45 +7,40 @@ const URL = 'https://api.nytimes.com/svc/movies/v2/reviews/search.json?'
             + `api-key=${NYT_API_KEY}`;
 
 // Code SearchableMovieReviewsContainer Here
-export default class SearchableMovieReviewsContainer extends Component {
+class SearchableMovieReviews extends Component {
 
-  state = {
-    reviews: [],
-    searchTerm: ""
-  }
-
-  renderReviews = () => {
-    if (this.state.reviews.length > 0) {
-      return <MovieReviews reviews={this.state.reviews}/>
+    constructor() {
+        super();
+        this.state = {
+            reviews: [],
+            searchTerm: ""
+        }
     }
-  }
 
-  textFieldChange = (event) => this.setState({searchTerm: event.target.value})
+    changeHandler = (e) => {
+        this.setState({ searchTerm: e.target.value })
+    }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-    fetch(URL + `query=${this.state.searchTerm}&` )
-      .then(resp => resp.json())
-      .then(json => {
-        this.setState({
-          reviews: json.results
-        })
-      })
-  }
+    searchReviews = (e) => {
+        e.preventDefault()
+        fetch(`https://api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=x90cZ1J9AlXqgFJwpawckVjPmlEPzqEv&query=${this.state.searchTerm}`)
+        .then(resp => resp.json())
+        .then(rev => this.setState({ reviews: rev.results}))
+        .then(rev => console.log(rev.results))
+    }
 
-  render(){
-    return (
-      <div className="searchable-movie-reviews">
-        <form onSubmit={event => this.handleSubmit(event)}>
-          <input
-            type="text"
-            value={this.state.searchTerm}
-            onChange={(event) => this.textFieldChange(event)}
-          />
-          <input type="submit"/>
-        </form>
-        {this.renderReviews()}
-      </div>
-    )
-  }
+    render() {
+        return (
+            <div className="searchable-movie-reviews">
+                 <form onSubmit={this.searchReviews}>
+                    Search Reviews:  
+                    <input type="text" placeholder="search" value={this.state.searchTerm} onChange={this.changeHandler} label="Enter a Search Term:"/>
+                    <input type="submit" value="Search" />
+                </form>
+                <MovieReviews reviews={this.state.reviews}/>
+            </div>
+        )
+    }
 }
+
+export default SearchableMovieReviews
