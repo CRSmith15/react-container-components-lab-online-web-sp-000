@@ -7,31 +7,45 @@ const URL = 'https://api.nytimes.com/svc/movies/v2/reviews/search.json?'
             + `api-key=${NYT_API_KEY}`;
 
 // Code SearchableMovieReviewsContainer Here
-class SearchableMovieReviewsContainer extends Component {
-  constructor(){
-    super();
+export default class SearchableMovieReviewsContainer extends Component {
 
-    this.state = {
-      searchTerm: '', reviews: []
+  state = {
+    reviews: [],
+    searchTerm: ""
+  }
+
+  renderReviews = () => {
+    if (this.state.reviews.length > 0) {
+      return <MovieReviews reviews={this.state.reviews}/>
     }
   }
 
+  textFieldChange = (event) => this.setState({searchTerm: event.target.value})
 
-  submitEvent(event) {
-    event.preventDefault();
-    fetch(URL.concat(this.state.searchTerm))
-        .then(resp => resp.json())
-        .then(resp => this.setState({ reviews: resp.results }));
+  handleSubmit = (event) => {
+    event.preventDefault()
+    fetch(URL1 + `query=${this.state.searchTerm}&` + URL3)
+      .then(resp => resp.json())
+      .then(json => {
+        this.setState({
+          reviews: json.results
+        })
+      })
   }
 
   render(){
-    return(
+    return (
       <div className="searchable-movie-reviews">
-        <h3>The Searched Movie Reviews:</h3>
-        <MovieReviews reviews={this.state.reviews} />
+        <form onSubmit={event => this.handleSubmit(event)}>
+          <input
+            type="text"
+            value={this.state.searchTerm}
+            onChange={(event) => this.textFieldChange(event)}
+          />
+          <input type="submit"/>
+        </form>
+        {this.renderReviews()}
       </div>
-    );
+    )
   }
 }
-
-export default SearchableMovieReviewsContainer;
