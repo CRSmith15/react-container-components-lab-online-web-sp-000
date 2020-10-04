@@ -32,4 +32,4 @@ class LatestMoviewReviewsContainer extends Component {
 }
 
 
-export default LatestMoviewReviewsContainer 
+export default LatestMoviewReviewsContainer
