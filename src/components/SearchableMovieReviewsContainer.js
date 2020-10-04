@@ -33,7 +33,7 @@ class SearchableMovieReviews extends Component {
         return (
             <div className="searchable-movie-reviews">
                  <form onSubmit={this.searchReviews}>
-                    Search Reviews:  
+                    Search Reviews:
                     <input type="text" placeholder="search" value={this.state.searchTerm} onChange={this.changeHandler} label="Enter a Search Term:"/>
                     <input type="submit" value="Search" />
                 </form>
