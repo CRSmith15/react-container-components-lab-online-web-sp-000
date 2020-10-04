@@ -24,7 +24,7 @@ export default class SearchableMovieReviewsContainer extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    fetch(URL1 + `query=${this.state.searchTerm}&` + URL3)
+    fetch(URL + `query=${this.state.searchTerm}&` + URL3)
       .then(resp => resp.json())
       .then(json => {
         this.setState({
